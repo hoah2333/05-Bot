@@ -8,8 +8,8 @@ class CNTech extends EventEmitter {
   constructor() {
     super();
 
-    this.tech = new WD('scp-tech-cn');
-    this.cn = new WD('scp-wiki-cn');
+    this.tech = new WD('backrooms-wiki-cn');
+    this.cn = new WD('backrooms-wiki-cn');
     this.reserves = [];
     this.outdates = [];
   }
@@ -215,20 +215,20 @@ class CNTech extends EventEmitter {
     let info = await this.getInfo({
       category: "reserve",
       created_at: null,
-      tags: "-无原文",
+      tags: "-_无原文",
     })
     let info2 = await this.getInfo({
       category: "outdate",
       created_at: "older than 30 day",
-      tags: "-长网址",
+      tags: "-_长网址",
     })
     info.forEach(v=>{
       let tag = v.rawname.length>=55 ? ["长网址"] : [];
       if (v.page.exist === false) {
-        tag.push("无原文");
+        tag.push("_无原文");
         winston.verbose(`No source article for "${v.rawname}"`);
       } else if (v.trans.exist && v.created<=v.trans.created) {
-        tag.push("已翻译")
+        tag.push("_已翻译")
       }
       if (tag.length) {
         this.tech.tags(v.rawname, {add: tag}).catch(e=>{
@@ -251,11 +251,11 @@ class CNTech extends EventEmitter {
     let info = await this.getInfo({
       category: "reserve",
       created_at: null,
-      tags: "+已翻译",
+      tags: "+_已翻译",
     })
     info.forEach(v=>{
       if (!v.trans.exist) {
-        this.tech.tags(v.rawname, {remove: "已翻译"}).catch(e=>{
+        this.tech.tags(v.rawname, {remove: "_已翻译"}).catch(e=>{
           winston.warn(`${e.name} at tagging "${v.rawname}": ${e.message}`);
         })
       }
